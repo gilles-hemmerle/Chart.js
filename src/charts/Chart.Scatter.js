@@ -3,6 +3,7 @@
 module.exports = function(Chart) {
 
 	var defaultConfig = {
+		showLines: false,
 		hover: {
 			mode: 'single'
 		},
