@@ -13,6 +13,7 @@ module.exports = function(Chart) {
 		weight: 2000,        // by default greater than legend (1000) to be above
 		fontStyle: 'bold',
 		padding: 10,
+		lineSpacing: 5,
 
 		// actual title
 		text: ''
@@ -111,13 +112,15 @@ module.exports = function(Chart) {
 				globalDefaults = Chart.defaults.global,
 				display = opts.display,
 				fontSize = valueOrDefault(opts.fontSize, globalDefaults.defaultFontSize),
-				minSize = me.minSize;
+				minSize = me.minSize,
+				lineCount = helpers.isArray(opts.text) ? opts.text.length : 1,
+				textSize = display ? (lineCount * fontSize) + (opts.padding * 2) + (opts.lineSpacing * (lineCount - 1)) : 0;
 
 			if (me.isHorizontal()) {
 				minSize.width = me.maxWidth; // fill all the width
-				minSize.height = display ? fontSize + (opts.padding * 2) : 0;
+				minSize.height = textSize;
 			} else {
-				minSize.width = display ? fontSize + (opts.padding * 2) : 0;
+				minSize.width = textSize;
 				minSize.height = me.maxHeight; // fill all the height
 			}
 
@@ -175,7 +178,18 @@ module.exports = function(Chart) {
 				ctx.rotate(rotation);
 				ctx.textAlign = 'center';
 				ctx.textBaseline = 'middle';
-				ctx.fillText(opts.text, 0, 0, maxWidth);
+
+				var text = opts.text;
+				if (helpers.isArray(text)) {
+					var y = 0;
+					for (var i = 0; i < text.length; ++i) {
+						ctx.fillText(text[i], 0, y, maxWidth);
+						y += opts.lineSpacing + fontSize;
+					}
+				} else {
+					ctx.fillText(text, 0, 0, maxWidth);
+				}
+
 				ctx.restore();
 			}
 		}

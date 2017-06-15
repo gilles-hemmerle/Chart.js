@@ -14,6 +14,7 @@ describe('Title block tests', function() {
 			weight: 2000,
 			fontStyle: 'bold',
 			padding: 10,
+			lineSpacing: 5,
 			text: ''
 		});
 	});
@@ -73,6 +74,27 @@ describe('Title block tests', function() {
 
 		expect(minSize).toEqual({
 			width: 32,
+			height: 400
+		});
+	});
+
+	it('should have the correct size when there are multiple lines of text', function() {
+		var chart = {};
+
+		var options = Chart.helpers.clone(Chart.defaults.global.title);
+		options.text = ['line1', 'line2'];
+		options.position = 'left';
+		options.display = true;
+
+		var title = new Chart.Title({
+			chart: chart,
+			options: options
+		});
+
+		var minSize = title.update(200, 400);
+
+		expect(minSize).toEqual({
+			width: 49,
 			height: 400
 		});
 	});
