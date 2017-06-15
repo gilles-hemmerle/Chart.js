@@ -833,7 +833,7 @@ module.exports = function(Chart) {
 			// Need to call with native event here to not break backwards compatibility
 			helpers.callback(options.onHover || options.hover.onHover, [e.native, me.active], me);
 
-			if (e.type === 'mouseup' || e.type === 'click') {
+			if (e.type === 'mousedown' || e.type === 'click') {
 				if (options.onClick) {
 					// Use e.native here for backwards compatibility
 					options.onClick.call(me, e.native, me.active);
